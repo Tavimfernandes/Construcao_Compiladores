@@ -1,8 +1,12 @@
+from tabulate import tabulate
+
+pri = -1
 i = 0
 operadores = []
+tabela = []
+caracteres = ["+", "=", "-"]
 
 s = input("Digite uma expressão: ")
-# Esta variável percorre o tamanho do input
 tamanho = len(s)
 
 contador = 1
@@ -11,29 +15,32 @@ while i < tamanho:
     lexema = s[i]
 
     if lexema.isalpha():
-        operadores.append("<id, %s>" %contador)
+        operadores.append("<id, %s>" % contador)
+        pri += 1
+        tabela.append("{0} {1}".format(contador, s[pri]))
         contador += 1
         i += 1
 
     elif lexema.isdigit():
-        operadores.append("<%s>" %lexema)
+        operadores.append("<%s>" % lexema)
+        pri += 1
         i += 1
 
-    elif lexema == "+" or lexema == "=" or lexema == "+":
-        operadores.append("<%s>" %lexema)
+    elif lexema in caracteres:
+        operadores.append("<%s>" % lexema)
+        pri += 1
         i += 1
 
-    # Se o usuário digitar # o programa vai se encerrar
     elif lexema == "#":
         break
 
-    # Esse elif permite que o usuário deixe um espaço ou não entre os caracteres
     elif lexema == " ":
+        pri += 1
         i += 1
 
-    # Isso previne que o usuário digite algum caractere indesejado, sendo assim ele mostra que deu erro no caractere para o usuário
     else:
         print("<erro>")
         i += 1
 
-print(operadores)
+print(tabulate(tabela))
+print("Fluxo de tokens:",operadores)
